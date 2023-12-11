@@ -1,1 +1,27 @@
+.gita-banner{
+  width: 320px;
+  heigt: 180px;
+  border: solid 15px;
+  border-radius: 5%;
+  display: inline-block;
+}
+.image_size{
+  width: 320px;
+  height: 180px;
+  
+}
 
+.Gita_Chapter{
+  width: 320px;
+  heiht: 180px;
+  border: solid 5px;
+  display: inline-block;
+  background-color: pink;
+  color: Blue;
+  padding: 5px;
+}
+
+.Gita_Chapter_List{
+  display: inline-block;
+  color: Blue;
+}
