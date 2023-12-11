@@ -18,6 +18,7 @@
 
 /*---------------------------------- Carousel ------------------------------------- */
 .Carousel-Left-to-Right{
+display: inline-block;  
 width: 320px;
 height: 180px;
 border-style: solid;
