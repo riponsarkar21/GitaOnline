@@ -4,16 +4,17 @@
   border: solid 15px;
   border-radius: 5%;
   display: inline-block;
+  overflow: none;
 }
 .image_size{
   width: 320px;
-  height: 180px;
+  height: auto;
   
 }
 
 .Gita_Chapter{
   width: 320px;
-  heiht: 180px;
+  heiht: auto;
   border: solid 5px;
   display: inline-block;
   background-color: pink;
