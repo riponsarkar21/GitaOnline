@@ -1,0 +1,84 @@
+
+
+Home
+CSS
+CSS Gradients
+Tryit: Linear gradient - using multiple color stops 
+
+Result Size: 735 x 769
+
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<style>
+
+    .nav-button {
+
+        height: 100px;
+        width: 100px;
+        background-color: red; /* For browsers that do not support gradients */
+        background-image: linear-gradient(#795421, #ffff82, #291c0e, #cfb04d);
+        border-radius: 100%;
+        color: white;
+        font-weight: bold;
+
+
+
+    }
+
+    /* .nav-button {
+    height: 200px;
+    width: 200px;
+    background-color: red; 
+    background-image: linear-gradient(#795421, #ffff82, #291c0e, #cfb04d);
+    border-radius: 100%;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    text-decoration: none;
+    margin: 3px;
+    display: inline-block;
+
+    } */
+
+
+
+
+    .nav-button:hover{
+        color: black;
+        background-color: rgb(194, 67, 88);
+        border: solid gold;
+
+    }
+
+    </style>
+
+</head>
+
+
+<body>
+
+    <!-- <header>
+        <h1>Gita Online</h1>
+        <div class = "nav-container">
+          <button class = "nav-button" onclick = " document.location = './index.html'">Home</button>
+          <a class = "nav-button" href = "./index2.html">2nd version</a>
+          <a class = "nav-button" href = "./index3.html">3rd version</a>
+        </div>
+    </header> -->
+
+
+    <button class = "nav-button" onclick = "document.location ='./index.html'">Home</button>
+    <button class = "nav-button" onclick = "document.location ='./index2.html'">2nd Edition</button>
+    <button class = "nav-button" onclick = "document.location ='./index3.html'">3rd Edision</button>
+    <button class = "nav-button" onclick = "document.location ='./buttton.html'">4th Edition</button>
+
+
+
+</body>
+
+</html>
