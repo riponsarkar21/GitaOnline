@@ -6,10 +6,10 @@
     <title>Gita Online - Bhagavad Gita Audio</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
     
-    <!-- PWA Manifest - CORRECT PATH -->
-    <link rel="manifest" href="/manifest.json">
+    <!-- PWA Manifest - CORRECT PATH for GitHub Pages subfolder -->
+    <link rel="manifest" href="/GitaOnline/manifest.json">
     
-    <!-- iOS Support - CORRECTED META TAGS -->
+    <!-- iOS Support -->
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -324,14 +324,12 @@
             gap: 0.5rem;
         }
 
-        /* Autoplay message */
         .autoplay-message {
             color: rgba(255,255,255,0.8);
             font-size: 0.8rem;
             margin-top: 0.3rem;
         }
 
-        /* Responsive */
         @media (min-width: 768px) {
             .logo-container h1 { font-size: 2.2rem; }
             .header-content { flex-direction: row; justify-content: space-between; }
@@ -376,7 +374,7 @@
                     <input type="range" id="chantingVolume" min="0" max="100" value="30">
                 </div>
             </div>
-            <div class="autoplay-message" id="autoplayMessage">Tap play to start chanting</div>
+            <div class="autoplay-message" id="autoplayMessage">Tap anywhere to start chanting</div>
             <audio id="chantingAudio" loop preload="auto">
                 <source src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/chanting.mp3" type="audio/mpeg">
             </audio>
@@ -472,8 +470,8 @@
 
     <script>
         (function() {
-            // ========== FIXED: Use relative paths for PWA files ==========
-            const BASE_URL = window.location.origin;
+            // ========== FIXED: Dynamic path detection for GitHub Pages ==========
+            const BASE_PATH = window.location.pathname.includes('/GitaOnline/') ? '/GitaOnline' : '';
             
             // ========== AUDIO CHAPTERS ==========
             const chapters = [
@@ -510,38 +508,29 @@
             // Set chanting volume to 30%
             chantingAudio.volume = 0.3;
             
-            // FIXED: Better autoplay handling with user interaction detection
-            let autoplayAttempted = false;
+            // FIXED: Better autoplay handling with one-time user interaction
+            let userInteracted = false;
             
-            function attemptAutoplay() {
-                if (autoplayAttempted) return;
-                autoplayAttempted = true;
-                
-                chantingAudio.play().then(() => {
-                    chantingIcon.textContent = '⏸️';
-                    autoplayMessage.textContent = 'Chanting playing';
-                }).catch(error => {
-                    console.log('Autoplay prevented by browser - waiting for user interaction');
-                    chantingIcon.textContent = '▶️';
-                    autoplayMessage.textContent = 'Tap play to start chanting';
-                    
-                    // Add one-time click handler to start audio on first user interaction
-                    const startAudioOnInteraction = () => {
-                        chantingAudio.play().then(() => {
-                            chantingIcon.textContent = '⏸️';
-                            autoplayMessage.textContent = 'Chanting playing';
-                        }).catch(e => console.log('Still blocked:', e));
-                        document.removeEventListener('click', startAudioOnInteraction);
-                        document.removeEventListener('touchstart', startAudioOnInteraction);
-                    };
-                    
-                    document.addEventListener('click', startAudioOnInteraction, { once: true });
-                    document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
-                });
+            function startChanting() {
+                if (!userInteracted) {
+                    userInteracted = true;
+                    chantingAudio.play().then(() => {
+                        chantingIcon.textContent = '⏸️';
+                        autoplayMessage.textContent = 'Chanting playing';
+                    }).catch(e => console.log('Play failed:', e));
+                }
             }
             
-            // Attempt autoplay after page load
-            window.addEventListener('load', attemptAutoplay);
+            // Add one-time event listeners for user interaction
+            document.addEventListener('click', function once() {
+                startChanting();
+                document.removeEventListener('click', once);
+            }, { once: true });
+            
+            document.addEventListener('touchstart', function once() {
+                startChanting();
+                document.removeEventListener('touchstart', once);
+            }, { once: true });
 
             // Volume control
             volumeSlider.addEventListener('input', (e) => {
@@ -549,12 +538,13 @@
             });
 
             // Toggle chanting
-            playPauseBtn.addEventListener('click', function() {
+            playPauseBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
                 if (chantingAudio.paused) {
                     chantingAudio.play().then(() => {
                         chantingIcon.textContent = '⏸️';
                         autoplayMessage.textContent = 'Chanting playing';
-                    }).catch(e => console.log('Play failed:', e));
+                    });
                 } else {
                     chantingAudio.pause();
                     chantingIcon.textContent = '🔊';
@@ -615,7 +605,7 @@
                 });
             });
 
-            // ========== FIXED: PWA Installation ==========
+            // ========== PWA Installation ==========
             let deferredPrompt;
             const installButton = document.getElementById('installButton');
 
@@ -635,10 +625,10 @@
                 deferredPrompt = null;
             });
 
-            // FIXED: Register Service Worker with proper path
+            // FIXED: Register Service Worker with correct path
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    // Use relative path - this requires sw.js in the same directory
+                    // Use relative path - sw.js in same directory as index.html
                     navigator.serviceWorker.register('sw.js')
                         .then(registration => {
                             console.log('ServiceWorker registered successfully');
