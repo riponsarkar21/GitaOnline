@@ -2,16 +2,17 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gita Online - Bhagavad Gita Audio</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
     
-    <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <!-- PWA Manifest - CORRECT PATH -->
+    <link rel="manifest" href="/manifest.json">
     
-    <!-- iOS Support - Updated meta tags -->
+    <!-- iOS Support - CORRECTED META TAGS -->
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
     <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gita Online">
     <meta name="theme-color" content="#b8860b">
@@ -119,7 +120,7 @@
             margin: 0 auto;
         }
 
-        /* Banner - Removed lazy loading */
+        /* Banner */
         .banner-section {
             margin-bottom: 2rem;
             border-radius: var(--radius);
@@ -323,6 +324,13 @@
             gap: 0.5rem;
         }
 
+        /* Autoplay message */
+        .autoplay-message {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.8rem;
+            margin-top: 0.3rem;
+        }
+
         /* Responsive */
         @media (min-width: 768px) {
             .logo-container h1 { font-size: 2.2rem; }
@@ -352,7 +360,7 @@
     </header>
 
     <main>
-        <!-- Banner - Removed loading="lazy" -->
+        <!-- Banner -->
         <section id="home" class="banner-section">
             <img class="banner-image" src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Lord%20Krishna%20as%20the%20cosmic%20god.jpg" alt="Lord Krishna">
         </section>
@@ -360,20 +368,21 @@
         <!-- Minimal Chanting Player -->
         <section class="chanting-section">
             <div class="chanting-player-minimal">
-                <button id="chantingPlayPause" onclick="toggleChanting()">
-                    <span id="chantingIcon">⏸️</span>
+                <button id="chantingPlayPause">
+                    <span id="chantingIcon">🔊</span>
                 </button>
                 <div class="volume-control-minimal">
                     <span>🔊</span>
                     <input type="range" id="chantingVolume" min="0" max="100" value="30">
                 </div>
             </div>
-            <audio id="chantingAudio" loop>
+            <div class="autoplay-message" id="autoplayMessage">Tap play to start chanting</div>
+            <audio id="chantingAudio" loop preload="auto">
                 <source src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/chanting.mp3" type="audio/mpeg">
             </audio>
         </section>
 
-        <!-- Carousel - Removed loading="lazy" -->
+        <!-- Carousel -->
         <section class="carousel-section">
             <div class="section-title">
                 <span class="section-icon">🖼️</span>
@@ -400,7 +409,7 @@
                     <span>▶️ Now Playing: <span id="currentTrack">Mahatmya</span></span>
                 </div>
                 
-                <audio id="audioPlayer" controls>
+                <audio id="audioPlayer" controls preload="auto">
                     <source src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/mahatmya.ogg" type="audio/ogg">
                 </audio>
             </div>
@@ -463,6 +472,9 @@
 
     <script>
         (function() {
+            // ========== FIXED: Use relative paths for PWA files ==========
+            const BASE_URL = window.location.origin;
+            
             // ========== AUDIO CHAPTERS ==========
             const chapters = [
                 { name: 'Introduction', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/intro%5B1%5D.ogg' },
@@ -492,17 +504,44 @@
             const currentTrackSpan = document.getElementById('currentTrack');
             const chantingIcon = document.getElementById('chantingIcon');
             const volumeSlider = document.getElementById('chantingVolume');
+            const playPauseBtn = document.getElementById('chantingPlayPause');
+            const autoplayMessage = document.getElementById('autoplayMessage');
 
-            // Set chanting volume to 30% and try to autoplay
+            // Set chanting volume to 30%
             chantingAudio.volume = 0.3;
             
-            // Autoplay with user interaction fallback
-            const playChanting = () => {
-                chantingAudio.play().catch(() => {
+            // FIXED: Better autoplay handling with user interaction detection
+            let autoplayAttempted = false;
+            
+            function attemptAutoplay() {
+                if (autoplayAttempted) return;
+                autoplayAttempted = true;
+                
+                chantingAudio.play().then(() => {
+                    chantingIcon.textContent = '⏸️';
+                    autoplayMessage.textContent = 'Chanting playing';
+                }).catch(error => {
+                    console.log('Autoplay prevented by browser - waiting for user interaction');
                     chantingIcon.textContent = '▶️';
+                    autoplayMessage.textContent = 'Tap play to start chanting';
+                    
+                    // Add one-time click handler to start audio on first user interaction
+                    const startAudioOnInteraction = () => {
+                        chantingAudio.play().then(() => {
+                            chantingIcon.textContent = '⏸️';
+                            autoplayMessage.textContent = 'Chanting playing';
+                        }).catch(e => console.log('Still blocked:', e));
+                        document.removeEventListener('click', startAudioOnInteraction);
+                        document.removeEventListener('touchstart', startAudioOnInteraction);
+                    };
+                    
+                    document.addEventListener('click', startAudioOnInteraction, { once: true });
+                    document.addEventListener('touchstart', startAudioOnInteraction, { once: true });
                 });
-            };
-            playChanting();
+            }
+            
+            // Attempt autoplay after page load
+            window.addEventListener('load', attemptAutoplay);
 
             // Volume control
             volumeSlider.addEventListener('input', (e) => {
@@ -510,27 +549,32 @@
             });
 
             // Toggle chanting
-            window.toggleChanting = function() {
+            playPauseBtn.addEventListener('click', function() {
                 if (chantingAudio.paused) {
-                    chantingAudio.play();
-                    chantingIcon.textContent = '⏸️';
+                    chantingAudio.play().then(() => {
+                        chantingIcon.textContent = '⏸️';
+                        autoplayMessage.textContent = 'Chanting playing';
+                    }).catch(e => console.log('Play failed:', e));
                 } else {
                     chantingAudio.pause();
-                    chantingIcon.textContent = '▶️';
+                    chantingIcon.textContent = '🔊';
+                    autoplayMessage.textContent = 'Chanting paused';
                 }
-            };
+            });
 
             // When Gita plays → pause chanting
             gitaAudio.addEventListener('play', () => {
                 chantingAudio.pause();
-                chantingIcon.textContent = '▶️';
+                chantingIcon.textContent = '🔊';
+                autoplayMessage.textContent = 'Chanting paused (Gita playing)';
             });
 
-            // When Gita pauses → resume chanting (if not ended)
+            // When Gita pauses → resume chanting
             gitaAudio.addEventListener('pause', () => {
                 if (!gitaAudio.ended) {
                     chantingAudio.play().catch(() => {});
                     chantingIcon.textContent = '⏸️';
+                    autoplayMessage.textContent = 'Chanting playing';
                 }
             });
 
@@ -545,6 +589,7 @@
                 } else {
                     chantingAudio.play().catch(() => {});
                     chantingIcon.textContent = '⏸️';
+                    autoplayMessage.textContent = 'Chanting playing';
                 }
             });
 
@@ -570,7 +615,7 @@
                 });
             });
 
-            // ========== PWA Installation ==========
+            // ========== FIXED: PWA Installation ==========
             let deferredPrompt;
             const installButton = document.getElementById('installButton');
 
@@ -590,14 +635,17 @@
                 deferredPrompt = null;
             });
 
-            // Register Service Worker - Fixed: using relative path
+            // FIXED: Register Service Worker with proper path
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    navigator.serviceWorker.register('sw.js').then(registration => {
-                        console.log('ServiceWorker registered');
-                    }).catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
+                    // Use relative path - this requires sw.js in the same directory
+                    navigator.serviceWorker.register('sw.js')
+                        .then(registration => {
+                            console.log('ServiceWorker registered successfully');
+                        })
+                        .catch(err => {
+                            console.log('ServiceWorker registration failed: ', err);
+                        });
                 });
             }
 
