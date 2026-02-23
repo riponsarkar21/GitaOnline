@@ -7,11 +7,11 @@
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Gita%20Online%22%2C%22short_name%22%3A%22Gita%22%2C%22description%22%3A%22Listen%20to%20Bhagavad%20Gita%20audio%20chapters%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8f5e9%22%2C%22theme_color%22%3A%22%23b8860b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2Friponsarkar21%2FGitaOnline%2Fmain%2Fimages%2Ffavicon%2Ffavicon.ico%22%2C%22sizes%22%3A%2264x64%22%2C%22type%22%3A%22image%2Fx-icon%22%7D%5D%7D">
+    <link rel="manifest" href="manifest.json">
     
-    <!-- iOS Support -->
+    <!-- iOS Support - Updated meta tags -->
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gita Online">
     <meta name="theme-color" content="#b8860b">
@@ -119,7 +119,7 @@
             margin: 0 auto;
         }
 
-        /* Banner */
+        /* Banner - Removed lazy loading */
         .banner-section {
             margin-bottom: 2rem;
             border-radius: var(--radius);
@@ -270,7 +270,7 @@
             margin-bottom: 1rem;
         }
 
-        /* Chapter Buttons - English */
+        /* Chapter Buttons */
         .chapters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -352,9 +352,9 @@
     </header>
 
     <main>
-        <!-- Banner -->
+        <!-- Banner - Removed loading="lazy" -->
         <section id="home" class="banner-section">
-            <img class="banner-image" src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Lord%20Krishna%20as%20the%20cosmic%20god.jpg" alt="Lord Krishna" loading="lazy">
+            <img class="banner-image" src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Lord%20Krishna%20as%20the%20cosmic%20god.jpg" alt="Lord Krishna">
         </section>
 
         <!-- Minimal Chanting Player -->
@@ -368,12 +368,12 @@
                     <input type="range" id="chantingVolume" min="0" max="100" value="30">
                 </div>
             </div>
-            <audio id="chantingAudio" loop style="display: none;">
+            <audio id="chantingAudio" loop>
                 <source src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/chanting.mp3" type="audio/mpeg">
             </audio>
         </section>
 
-        <!-- Carousel -->
+        <!-- Carousel - Removed loading="lazy" -->
         <section class="carousel-section">
             <div class="section-title">
                 <span class="section-icon">🖼️</span>
@@ -381,9 +381,9 @@
             </div>
             <div class="carousel-container">
                 <div class="carousel-track">
-                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna1.jpg" alt="Krishna Teaching" loading="lazy">
-                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna2.jpg" alt="Krishna Teaching" loading="lazy">
-                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna3.jpg" alt="Krishna Teaching" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna1.jpg" alt="Krishna Teaching">
+                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna2.jpg" alt="Krishna Teaching">
+                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna3.jpg" alt="Krishna Teaching">
                 </div>
             </div>
         </section>
@@ -463,7 +463,7 @@
 
     <script>
         (function() {
-            // ========== AUDIO CHAPTERS PLAYLIST ==========
+            // ========== AUDIO CHAPTERS ==========
             const chapters = [
                 { name: 'Introduction', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/intro%5B1%5D.ogg' },
                 { name: 'Chapter 1', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita01%5B1%5D.ogg' },
@@ -487,20 +487,22 @@
                 { name: 'Mahatmya', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/mahatmya.ogg' }
             ];
 
-            // Get elements
             const chantingAudio = document.getElementById('chantingAudio');
             const gitaAudio = document.getElementById('audioPlayer');
             const currentTrackSpan = document.getElementById('currentTrack');
             const chantingIcon = document.getElementById('chantingIcon');
             const volumeSlider = document.getElementById('chantingVolume');
-            
-            let currentChapterIndex = 0; // 0 = Introduction
 
             // Set chanting volume to 30% and try to autoplay
             chantingAudio.volume = 0.3;
-            chantingAudio.play().catch(() => {
-                chantingIcon.textContent = '▶️';
-            });
+            
+            // Autoplay with user interaction fallback
+            const playChanting = () => {
+                chantingAudio.play().catch(() => {
+                    chantingIcon.textContent = '▶️';
+                });
+            };
+            playChanting();
 
             // Volume control
             volumeSlider.addEventListener('input', (e) => {
@@ -518,48 +520,40 @@
                 }
             };
 
-            // ========== SMART AUDIO SWITCHING ==========
-            
             // When Gita plays → pause chanting
             gitaAudio.addEventListener('play', () => {
                 chantingAudio.pause();
                 chantingIcon.textContent = '▶️';
             });
 
-            // When Gita pauses → resume chanting
+            // When Gita pauses → resume chanting (if not ended)
             gitaAudio.addEventListener('pause', () => {
-                if (!gitaAudio.ended) { // Don't resume if chapter ended (will auto-play next)
-                    chantingAudio.play();
+                if (!gitaAudio.ended) {
+                    chantingAudio.play().catch(() => {});
                     chantingIcon.textContent = '⏸️';
                 }
             });
 
             // When Gita ends → auto-play next chapter
             gitaAudio.addEventListener('ended', () => {
-                // Find current chapter index
                 const currentUrl = gitaAudio.src;
                 const currentIndex = chapters.findIndex(ch => currentUrl.includes(ch.url));
                 
                 if (currentIndex >= 0 && currentIndex < chapters.length - 1) {
-                    // Play next chapter
                     const nextChapter = chapters[currentIndex + 1];
                     playChapter(nextChapter.url, nextChapter.name, currentIndex + 1);
                 } else {
-                    // If last chapter, resume chanting
-                    chantingAudio.play();
+                    chantingAudio.play().catch(() => {});
                     chantingIcon.textContent = '⏸️';
                 }
             });
 
-            // Function to play chapter
             function playChapter(url, name, index) {
-                // Update UI
                 currentTrackSpan.textContent = name;
                 gitaAudio.src = url;
                 gitaAudio.load();
                 gitaAudio.play();
                 
-                // Update active button
                 document.querySelectorAll('.button-chapter').forEach(btn => {
                     btn.classList.remove('active');
                 });
@@ -572,12 +566,6 @@
                 btn.addEventListener('click', () => {
                     const url = btn.dataset.url;
                     const name = btn.textContent;
-                    
-                    // Update current chapter index (0-based)
-                    if (name === 'Introduction') currentChapterIndex = 0;
-                    else if (name === 'Mahatmya') currentChapterIndex = 19;
-                    else currentChapterIndex = parseInt(name.split(' ')[1]) || 0;
-                    
                     playChapter(url, name, idx);
                 });
             });
@@ -602,12 +590,14 @@
                 deferredPrompt = null;
             });
 
-            // Service Worker
+            // Register Service Worker - Fixed: using relative path
             if ('serviceWorker' in navigator) {
                 window.addEventListener('load', () => {
-                    const swCode = `self.addEventListener('install', e => e.waitUntil(caches.open('gita').then(c => c.addAll(['./'])))); self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));`;
-                    const blob = new Blob([swCode], { type: 'application/javascript' });
-                    navigator.serviceWorker.register(URL.createObjectURL(blob));
+                    navigator.serviceWorker.register('sw.js').then(registration => {
+                        console.log('ServiceWorker registered');
+                    }).catch(err => {
+                        console.log('ServiceWorker registration failed: ', err);
+                    });
                 });
             }
 
@@ -618,6 +608,11 @@
                     const target = document.querySelector(this.getAttribute('href'));
                     if (target) {
                         window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                        
+                        document.querySelectorAll('.nav-button').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        this.classList.add('active');
                     }
                 });
             });
