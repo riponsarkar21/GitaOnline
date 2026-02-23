@@ -2,7 +2,7 @@
   "name": "Gita Online",
   "short_name": "Gita",
   "description": "Listen to Bhagavad Gita audio chapters with continuous chanting",
-  "start_url": ".",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#f8f5e9",
   "theme_color": "#b8860b",
