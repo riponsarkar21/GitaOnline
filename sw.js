@@ -1,8 +1,8 @@
 // Service Worker for Gita Online
 const CACHE_NAME = 'gita-online-v1';
 const urlsToCache = [
-  '/',
-  '/manifest.json',
+  '/GitaOnline/',
+  '/GitaOnline/manifest.json',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap'
 ];
 
@@ -11,6 +11,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
+        console.log('Cache opened');
         return cache.addAll(urlsToCache);
       })
   );
@@ -24,7 +25,7 @@ self.addEventListener('fetch', event => {
           return response;
         }
         return fetch(event.request).catch(() => {
-          return caches.match('/');
+          return caches.match('/GitaOnline/');
         });
       })
   );
