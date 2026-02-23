@@ -2,25 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gita Online - Bhagavad Gita Audio PWA</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Gita Online - Bhagavad Gita Audio</title>
     <link rel="icon" type="image/x-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
     
     <!-- PWA Manifest -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Gita%20Online%22%2C%22short_name%22%3A%22Gita%22%2C%22description%22%3A%22Listen%20to%20Bhagavad%20Gita%20audio%20chapters%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23f8f5e9%22%2C%22theme_color%22%3A%22%23b8860b%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22https%3A%2F%2Fraw.githubusercontent.com%2Friponsarkar21%2FGitaOnline%2Fmain%2Fimages%2Ffavicon%2Ffavicon.ico%22%2C%22sizes%22%3A%2264x64%22%2C%22type%22%3A%22image%2Fx-icon%22%7D%5D%7D">
     
     <!-- iOS Support -->
     <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico">
-    <meta name="apple-mobile-web-app-status-bar" content="#d4a017">
-    <meta name="theme-color" content="#d4a017">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Gita Online">
+    <meta name="theme-color" content="#b8860b">
     
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
-        /* Reset & Base Styles */
         * {
             margin: 0;
             padding: 0;
@@ -28,45 +29,33 @@
         }
 
         :root {
-            --primary: #d4a017; /* Gold */
-            --primary-dark: #a8780b;
-            --secondary: #FF9933; /* Gerua */
-            --secondary-light: #3e6b43;
-            --light: #f8f5e9;
-            --dark: #1a1a1a;
-            --text-light: #f8f5e9;
-            --text-dark: #333333;
-            --gray: #8a8a8a;
-            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-            --radius: 8px;
+            --primary: #b8860b;
+            --primary-light: #daa520;
+            --primary-dark: #8b6910;
+            --secondary: #1e4d2b;
+            --secondary-light: #2e6b3e;
+            --background: #f8f5e9;
+            --card-bg: #ffffff;
+            --text-dark: #2c1810;
+            --text-light: #fef9e7;
+            --gray: #6b5a4c;
+            --shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            --radius: 12px;
+            --radius-sm: 8px;
         }
 
         body {
-            font-family: 'Noto Sans', sans-serif;
+            font-family: 'Poppins', sans-serif;
             line-height: 1.6;
             color: var(--text-dark);
-            background-color: var(--light);
+            background-color: var(--background);
             max-width: 100vw;
             overflow-x: hidden;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Noto Serif', serif;
-            color: var(--secondary);
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            font-size: 1.8rem;
-        }
-
-        h2 {
-            font-size: 1.5rem;
-        }
-
         /* Header */
         header {
-            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
             color: var(--text-light);
             padding: 1rem;
             position: sticky;
@@ -85,11 +74,19 @@
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.8rem;
         }
 
         .logo-icon {
+            font-size: 2rem;
+        }
+
+        .logo-container h1 {
+            color: #ffffff;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
             font-size: 1.8rem;
+            margin: 0;
+            font-weight: 700;
         }
 
         .nav-container {
@@ -100,11 +97,11 @@
         }
 
         .nav-button {
-            background-color: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            border: none;
+            background-color: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            border: 1px solid rgba(255, 255, 255, 0.2);
             padding: 0.5rem 1rem;
-            border-radius: var(--radius);
+            border-radius: var(--radius-sm);
             text-decoration: none;
             font-weight: 500;
             transition: all 0.3s ease;
@@ -112,7 +109,7 @@
 
         .nav-button:hover, .nav-button.active {
             background-color: var(--primary);
-            color: var(--dark);
+            color: #ffffff;
         }
 
         /* Main Content */
@@ -137,13 +134,88 @@
             display: block;
         }
 
+        /* Minimal Chanting Player */
+        .chanting-section {
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            border-radius: var(--radius);
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow);
+        }
+
+        .chanting-player-minimal {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .chanting-player-minimal button {
+            background: var(--primary);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .volume-control-minimal {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .volume-control-minimal span {
+            color: white;
+            font-size: 1.2rem;
+        }
+
+        .volume-control-minimal input {
+            flex: 1;
+            height: 6px;
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .volume-control-minimal input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--primary);
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
         /* Carousel */
         .carousel-section {
             margin-bottom: 2rem;
         }
 
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .section-icon {
+            font-size: 1.8rem;
+            color: var(--primary);
+        }
+
         .carousel-container {
-            position: relative;
             overflow: hidden;
             border-radius: var(--radius);
             box-shadow: var(--shadow);
@@ -152,7 +224,7 @@
 
         .carousel-track {
             display: flex;
-            animation: slide 25s linear infinite;
+            animation: slide 20s linear infinite;
             width: 300%;
         }
 
@@ -169,30 +241,16 @@
 
         /* Audio Player */
         .audio-section {
-            background-color: white;
+            background-color: var(--card-bg);
             border-radius: var(--radius);
             padding: 1.5rem;
             margin-bottom: 2rem;
             box-shadow: var(--shadow);
         }
 
-        .section-title {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid var(--primary);
-        }
-
-        .section-icon {
-            font-size: 1.5rem;
-            color: var(--primary);
-        }
-
         .audio-player-container {
-            background-color: #f5f5f5;
-            border-radius: var(--radius);
+            background-color: #f5f0e6;
+            border-radius: var(--radius-sm);
             padding: 1rem;
             margin-bottom: 1.5rem;
         }
@@ -200,21 +258,19 @@
         #audioPlayer {
             width: 100%;
             margin-bottom: 1rem;
+            border-radius: 30px;
         }
 
         .now-playing {
-            background-color: var(--primary);
-            color: var(--dark);
-            padding: 0.5rem 1rem;
-            border-radius: var(--radius);
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0.8rem 1rem;
+            border-radius: var(--radius-sm);
             font-weight: 600;
             margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
         }
 
-        /* Chapter Buttons */
+        /* Chapter Buttons - English */
         .chapters-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
@@ -223,71 +279,42 @@
         }
 
         .button-chapter {
-            background-color: var(--secondary);
-            color: var(--text-light);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
+            color: white;
             border: none;
             padding: 0.8rem 0.5rem;
-            border-radius: var(--radius);
-            font-weight: 600;
+            border-radius: var(--radius-sm);
+            font-weight: 500;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
         }
 
         .button-chapter:hover {
-            background-color: var(--primary);
-            color: var(--dark);
+            background: var(--primary);
             transform: translateY(-2px);
         }
 
         .button-chapter.active {
-            background-color: var(--primary);
-            color: var(--dark);
-            box-shadow: 0 4px 8px rgba(212, 160, 23, 0.3);
-        }
-
-        /* Features Section */
-        .features-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2rem;
-        }
-
-        .feature-card {
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            text-align: center;
-        }
-
-        .feature-icon {
-            font-size: 2.5rem;
-            color: var(--primary);
-            margin-bottom: 1rem;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
         }
 
         /* Footer */
         footer {
-            background-color: var(--secondary);
+            background: linear-gradient(135deg, var(--secondary), var(--secondary-light));
             color: var(--text-light);
             padding: 2rem 1rem;
             text-align: center;
             margin-top: 2rem;
         }
 
-        .footer-content {
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
         .install-pwa {
-            background-color: var(--primary);
-            color: var(--dark);
+            background: var(--primary);
+            color: white;
             border: none;
             padding: 0.8rem 1.5rem;
-            border-radius: var(--radius);
+            border-radius: 30px;
             font-weight: 600;
             margin: 1rem 0;
             cursor: pointer;
@@ -296,99 +323,17 @@
             gap: 0.5rem;
         }
 
-        /* PWA Install Prompt */
-        .pwa-prompt {
-            position: fixed;
-            bottom: 1rem;
-            left: 1rem;
-            right: 1rem;
-            background-color: white;
-            border-radius: var(--radius);
-            padding: 1rem;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            display: none;
-        }
-
-        .pwa-prompt.show {
-            display: block;
-        }
-
-        .pwa-prompt-content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .close-prompt {
-            background: none;
-            border: none;
-            font-size: 1.5rem;
-            cursor: pointer;
-            color: var(--gray);
-        }
-
-        /* Responsive Design */
+        /* Responsive */
         @media (min-width: 768px) {
-            h1 {
-                font-size: 2.2rem;
-            }
-            
-            .header-content {
-                flex-direction: row;
-                justify-content: space-between;
-            }
-            
-            .banner-image {
-                height: 300px;
-            }
-            
-            .carousel-container {
-                height: 250px;
-            }
-            
-            .carousel-track img {
-                height: 250px;
-            }
-            
-            .chapters-grid {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-                gap: 1rem;
-            }
-            
-            .button-chapter {
-                padding: 1rem 0.5rem;
-            }
+            .logo-container h1 { font-size: 2.2rem; }
+            .header-content { flex-direction: row; justify-content: space-between; }
+            .banner-image { height: 300px; }
+            .carousel-container { height: 250px; }
+            .carousel-track img { height: 250px; }
+            .chapters-grid { grid-template-columns: repeat(6, 1fr); }
         }
 
-        @media (min-width: 1024px) {
-            main {
-                padding: 2rem;
-            }
-            
-            .banner-image {
-                height: 350px;
-            }
-            
-            .chapters-grid {
-                grid-template-columns: repeat(6, 1fr);
-            }
-        }
-
-        /* Loading Animation */
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            border-top-color: var(--primary);
-            animation: spin 1s ease-in-out infinite;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        #installButton { display: none; }
     </style>
 </head>
 <body>
@@ -400,286 +345,283 @@
             </div>
             <div class="nav-container">
                 <a class="nav-button active" href="#home">Home</a>
-                <a class="nav-button" href="#audio">Audio Gita</a>
+                <a class="nav-button" href="#audio">Chapters</a>
                 <a class="nav-button" href="#about">About</a>
             </div>
         </div>
     </header>
 
     <main>
-        <!-- Banner Section -->
+        <!-- Banner -->
         <section id="home" class="banner-section">
-            <img class="banner-image" src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Lord%20Krishna%20as%20the%20cosmic%20god.jpg" alt="Lord Krishna as the cosmic god">
+            <img class="banner-image" src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Lord%20Krishna%20as%20the%20cosmic%20god.jpg" alt="Lord Krishna" loading="lazy">
         </section>
 
-        <!-- Carousel Section -->
+        <!-- Minimal Chanting Player -->
+        <section class="chanting-section">
+            <div class="chanting-player-minimal">
+                <button id="chantingPlayPause" onclick="toggleChanting()">
+                    <span id="chantingIcon">⏸️</span>
+                </button>
+                <div class="volume-control-minimal">
+                    <span>🔊</span>
+                    <input type="range" id="chantingVolume" min="0" max="100" value="30">
+                </div>
+            </div>
+            <audio id="chantingAudio" loop style="display: none;">
+                <source src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/chanting.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+
+        <!-- Carousel -->
         <section class="carousel-section">
-            <h2 class="section-title">
-                <span class="section-icon">🕉️</span>
-                The Divine Teachings
-            </h2>
+            <div class="section-title">
+                <span class="section-icon">🖼️</span>
+                <h2>Krishna's Teachings</h2>
+            </div>
             <div class="carousel-container">
                 <div class="carousel-track">
-                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna1.jpg" alt="Krishna Teaching Arjuna">
-                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna2.jpg" alt="Krishna Teaching Arjuna">
-                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna3.jpg" alt="Krishna Teaching Arjuna">
+                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna1.jpg" alt="Krishna Teaching" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna2.jpg" alt="Krishna Teaching" loading="lazy">
+                    <img src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Krishna%20Teaching%20Arjuna3.jpg" alt="Krishna Teaching" loading="lazy">
                 </div>
             </div>
         </section>
 
-        <!-- Audio Player Section -->
+        <!-- Gita Audio Player -->
         <section id="audio" class="audio-section">
-            <h2 class="section-title">
+            <div class="section-title">
                 <span class="section-icon">🎵</span>
-                Listen to Shreemad Bhagavad Gita
-            </h2>
+                <h2>Bhagavad Gita Audio</h2>
+            </div>
             
             <div class="audio-player-container">
                 <div class="now-playing">
-                    <span>▶️</span>
-                    <span id="currentTrack">Mahatmya - The Glory of the Gita</span>
+                    <span>▶️ Now Playing: <span id="currentTrack">Mahatmya</span></span>
                 </div>
                 
                 <audio id="audioPlayer" controls>
                     <source src="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/mahatmya.ogg" type="audio/ogg">
-                    Your browser does not support the audio tag.
                 </audio>
-                
-                <p>Listen to the divine teachings of Lord Krishna in Sanskrit</p>
             </div>
 
             <h3>Select Chapter</h3>
-            <div class="chapters-grid">
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/intro%5B1%5D.ogg', 'Introduction')">Introduction</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita01%5B1%5D.ogg', 'Chapter 1')">Chapter 1</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita02%5B1%5D.ogg', 'Chapter 2')">Chapter 2</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita03%5B1%5D.ogg', 'Chapter 3')">Chapter 3</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita04%5B1%5D.ogg', 'Chapter 4')">Chapter 4</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita05%5B1%5D.ogg', 'Chapter 5')">Chapter 5</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita06%5B1%5D.ogg', 'Chapter 6')">Chapter 6</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita07%5B1%5D.ogg', 'Chapter 7')">Chapter 7</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita08%5B1%5D.ogg', 'Chapter 8')">Chapter 8</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita09%5B1%5D.ogg', 'Chapter 9')">Chapter 9</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita10%5B1%5D.ogg', 'Chapter 10')">Chapter 10</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita11%5B1%5D.ogg', 'Chapter 11')">Chapter 11</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita12%5B1%5D.ogg', 'Chapter 12')">Chapter 12</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita13%5B1%5D.ogg', 'Chapter 13')">Chapter 13</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita14%5B1%5D.ogg', 'Chapter 14')">Chapter 14</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita15%5B1%5D.ogg', 'Chapter 15')">Chapter 15</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita16%5B1%5D.ogg', 'Chapter 16')">Chapter 16</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita17%5B1%5D.ogg', 'Chapter 17')">Chapter 17</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita18%5B1%5D.ogg', 'Chapter 18')">Chapter 18</button>
-                <button class="button-chapter" onclick="changeAudio('https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/mahatmya.ogg', 'Mahatmya')">Mahatmya</button>
+            <div class="chapters-grid" id="chapterButtons">
+                <button class="button-chapter" data-chapter="intro" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/intro%5B1%5D.ogg">Introduction</button>
+                <button class="button-chapter" data-chapter="1" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita01%5B1%5D.ogg">Chapter 1</button>
+                <button class="button-chapter" data-chapter="2" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita02%5B1%5D.ogg">Chapter 2</button>
+                <button class="button-chapter" data-chapter="3" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita03%5B1%5D.ogg">Chapter 3</button>
+                <button class="button-chapter" data-chapter="4" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita04%5B1%5D.ogg">Chapter 4</button>
+                <button class="button-chapter" data-chapter="5" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita05%5B1%5D.ogg">Chapter 5</button>
+                <button class="button-chapter" data-chapter="6" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita06%5B1%5D.ogg">Chapter 6</button>
+                <button class="button-chapter" data-chapter="7" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita07%5B1%5D.ogg">Chapter 7</button>
+                <button class="button-chapter" data-chapter="8" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita08%5B1%5D.ogg">Chapter 8</button>
+                <button class="button-chapter" data-chapter="9" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita09%5B1%5D.ogg">Chapter 9</button>
+                <button class="button-chapter" data-chapter="10" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita10%5B1%5D.ogg">Chapter 10</button>
+                <button class="button-chapter" data-chapter="11" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita11%5B1%5D.ogg">Chapter 11</button>
+                <button class="button-chapter" data-chapter="12" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita12%5B1%5D.ogg">Chapter 12</button>
+                <button class="button-chapter" data-chapter="13" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita13%5B1%5D.ogg">Chapter 13</button>
+                <button class="button-chapter" data-chapter="14" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita14%5B1%5D.ogg">Chapter 14</button>
+                <button class="button-chapter" data-chapter="15" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita15%5B1%5D.ogg">Chapter 15</button>
+                <button class="button-chapter" data-chapter="16" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita16%5B1%5D.ogg">Chapter 16</button>
+                <button class="button-chapter" data-chapter="17" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita17%5B1%5D.ogg">Chapter 17</button>
+                <button class="button-chapter" data-chapter="18" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita18%5B1%5D.ogg">Chapter 18</button>
+                <button class="button-chapter" data-chapter="mahatmya" data-url="https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/mahatmya.ogg">Mahatmya</button>
             </div>
         </section>
 
-        <!-- Features Section -->
-        <section id="about" class="features-section">
-            <div class="feature-card">
-                <div class="feature-icon">📱</div>
+        <!-- Features -->
+        <section id="about" class="features-section" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+            <div class="feature-card" style="background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">📱</div>
                 <h3>Mobile First</h3>
-                <p>Designed specifically for mobile devices with responsive layout that works on all screen sizes.</p>
+                <p>Designed for mobile devices with responsive layout.</p>
             </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">🔊</div>
-                <h3>Audio Gita</h3>
-                <p>Listen to all 18 chapters of Bhagavad Gita in authentic Sanskrit pronunciation.</p>
+            <div class="feature-card" style="background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">🕉️</div>
+                <h3>Continuous Chanting</h3>
+                <p>Background chanting with volume control.</p>
             </div>
-            
-            <div class="feature-card">
-                <div class="feature-icon">⚡</div>
+            <div class="feature-card" style="background: white; padding: 1.5rem; border-radius: var(--radius); box-shadow: var(--shadow);">
+                <div style="font-size: 2.5rem; color: var(--primary); margin-bottom: 1rem;">⚡</div>
                 <h3>PWA Ready</h3>
-                <p>Install as an app on your device for offline access and better performance.</p>
+                <p>Install as an app on your device.</p>
             </div>
         </section>
     </main>
 
     <footer>
         <div class="footer-content">
-            <h2>Gita Online</h2>
-            <p>Experience the divine wisdom of Shreemad Bhagavad Gita anytime, anywhere.</p>
-            
+            <h2 style="color: white;">Gita Online</h2>
+            <p>Listen to Bhagavad Gita audio chapters</p>
             <button id="installButton" class="install-pwa">
                 <span>📲</span> Install App
             </button>
-            
-            <p class="footer-note">This is a Progressive Web App. You can install it on your device for offline access.</p>
-            <p>© 2023 Gita Online. All sacred texts belong to their respective traditions.</p>
+            <p>© 2025 Gita Online</p>
         </div>
     </footer>
 
-    <!-- PWA Install Prompt -->
-    <div id="pwaPrompt" class="pwa-prompt">
-        <div class="pwa-prompt-content">
-            <div>
-                <strong>Install Gita Online</strong>
-                <p>Add to home screen for easy access</p>
-            </div>
-            <button id="closePrompt" class="close-prompt">×</button>
-        </div>
-    </div>
-
-    <!-- PWA Service Worker Registration -->
     <script>
-        // Register Service Worker for PWA functionality
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('sw.js').then(registration => {
-                    console.log('ServiceWorker registration successful');
-                }).catch(err => {
-                    console.log('ServiceWorker registration failed: ', err);
+        (function() {
+            // ========== AUDIO CHAPTERS PLAYLIST ==========
+            const chapters = [
+                { name: 'Introduction', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/intro%5B1%5D.ogg' },
+                { name: 'Chapter 1', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita01%5B1%5D.ogg' },
+                { name: 'Chapter 2', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita02%5B1%5D.ogg' },
+                { name: 'Chapter 3', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita03%5B1%5D.ogg' },
+                { name: 'Chapter 4', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita04%5B1%5D.ogg' },
+                { name: 'Chapter 5', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita05%5B1%5D.ogg' },
+                { name: 'Chapter 6', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita06%5B1%5D.ogg' },
+                { name: 'Chapter 7', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita07%5B1%5D.ogg' },
+                { name: 'Chapter 8', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita08%5B1%5D.ogg' },
+                { name: 'Chapter 9', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita09%5B1%5D.ogg' },
+                { name: 'Chapter 10', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita10%5B1%5D.ogg' },
+                { name: 'Chapter 11', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita11%5B1%5D.ogg' },
+                { name: 'Chapter 12', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita12%5B1%5D.ogg' },
+                { name: 'Chapter 13', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita13%5B1%5D.ogg' },
+                { name: 'Chapter 14', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita14%5B1%5D.ogg' },
+                { name: 'Chapter 15', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita15%5B1%5D.ogg' },
+                { name: 'Chapter 16', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita16%5B1%5D.ogg' },
+                { name: 'Chapter 17', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita17%5B1%5D.ogg' },
+                { name: 'Chapter 18', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/Audio%20Geeta%20Sanskrit/Bhagavad-gita18%5B1%5D.ogg' },
+                { name: 'Mahatmya', url: 'https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/mahatmya.ogg' }
+            ];
+
+            // Get elements
+            const chantingAudio = document.getElementById('chantingAudio');
+            const gitaAudio = document.getElementById('audioPlayer');
+            const currentTrackSpan = document.getElementById('currentTrack');
+            const chantingIcon = document.getElementById('chantingIcon');
+            const volumeSlider = document.getElementById('chantingVolume');
+            
+            let currentChapterIndex = 0; // 0 = Introduction
+
+            // Set chanting volume to 30% and try to autoplay
+            chantingAudio.volume = 0.3;
+            chantingAudio.play().catch(() => {
+                chantingIcon.textContent = '▶️';
+            });
+
+            // Volume control
+            volumeSlider.addEventListener('input', (e) => {
+                chantingAudio.volume = e.target.value / 100;
+            });
+
+            // Toggle chanting
+            window.toggleChanting = function() {
+                if (chantingAudio.paused) {
+                    chantingAudio.play();
+                    chantingIcon.textContent = '⏸️';
+                } else {
+                    chantingAudio.pause();
+                    chantingIcon.textContent = '▶️';
+                }
+            };
+
+            // ========== SMART AUDIO SWITCHING ==========
+            
+            // When Gita plays → pause chanting
+            gitaAudio.addEventListener('play', () => {
+                chantingAudio.pause();
+                chantingIcon.textContent = '▶️';
+            });
+
+            // When Gita pauses → resume chanting
+            gitaAudio.addEventListener('pause', () => {
+                if (!gitaAudio.ended) { // Don't resume if chapter ended (will auto-play next)
+                    chantingAudio.play();
+                    chantingIcon.textContent = '⏸️';
+                }
+            });
+
+            // When Gita ends → auto-play next chapter
+            gitaAudio.addEventListener('ended', () => {
+                // Find current chapter index
+                const currentUrl = gitaAudio.src;
+                const currentIndex = chapters.findIndex(ch => currentUrl.includes(ch.url));
+                
+                if (currentIndex >= 0 && currentIndex < chapters.length - 1) {
+                    // Play next chapter
+                    const nextChapter = chapters[currentIndex + 1];
+                    playChapter(nextChapter.url, nextChapter.name, currentIndex + 1);
+                } else {
+                    // If last chapter, resume chanting
+                    chantingAudio.play();
+                    chantingIcon.textContent = '⏸️';
+                }
+            });
+
+            // Function to play chapter
+            function playChapter(url, name, index) {
+                // Update UI
+                currentTrackSpan.textContent = name;
+                gitaAudio.src = url;
+                gitaAudio.load();
+                gitaAudio.play();
+                
+                // Update active button
+                document.querySelectorAll('.button-chapter').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                const buttons = document.querySelectorAll('.button-chapter');
+                if (buttons[index]) buttons[index].classList.add('active');
+            }
+
+            // Chapter button clicks
+            document.querySelectorAll('.button-chapter').forEach((btn, idx) => {
+                btn.addEventListener('click', () => {
+                    const url = btn.dataset.url;
+                    const name = btn.textContent;
+                    
+                    // Update current chapter index (0-based)
+                    if (name === 'Introduction') currentChapterIndex = 0;
+                    else if (name === 'Mahatmya') currentChapterIndex = 19;
+                    else currentChapterIndex = parseInt(name.split(' ')[1]) || 0;
+                    
+                    playChapter(url, name, idx);
                 });
             });
-        }
 
-        // Audio player functionality
-        function changeAudio(source, trackName) {
-            const audioPlayer = document.getElementById('audioPlayer');
-            const currentTrack = document.getElementById('currentTrack');
-            
-            // Update current track display
-            currentTrack.textContent = trackName;
-            
-            // Remove active class from all buttons
-            document.querySelectorAll('.button-chapter').forEach(btn => {
-                btn.classList.remove('active');
+            // ========== PWA Installation ==========
+            let deferredPrompt;
+            const installButton = document.getElementById('installButton');
+
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                deferredPrompt = e;
+                installButton.style.display = 'inline-flex';
             });
-            
-            // Add active class to clicked button
-            event.target.classList.add('active');
-            
-            // Change audio source
-            audioPlayer.src = source;
-            audioPlayer.load();
-            audioPlayer.play().catch(e => {
-                console.log("Autoplay prevented. User interaction required.");
-            });
-        }
 
-        // PWA Install Prompt
-        let deferredPrompt;
-        const installButton = document.getElementById('installButton');
-        const pwaPrompt = document.getElementById('pwaPrompt');
-        const closePrompt = document.getElementById('closePrompt');
-
-        window.addEventListener('beforeinstallprompt', (e) => {
-            // Prevent Chrome 67 and earlier from automatically showing the prompt
-            e.preventDefault();
-            // Stash the event so it can be triggered later
-            deferredPrompt = e;
-            
-            // Show custom install button
-            installButton.style.display = 'inline-flex';
-            
-            // Show prompt after 5 seconds
-            setTimeout(() => {
-                if (deferredPrompt) {
-                    pwaPrompt.classList.add('show');
-                }
-            }, 5000);
-        });
-
-        installButton.addEventListener('click', (e) => {
-            // Hide our custom install button
-            installButton.style.display = 'none';
-            // Hide prompt
-            pwaPrompt.classList.remove('show');
-            
-            // Show the install prompt
-            if (deferredPrompt) {
+            installButton.addEventListener('click', async () => {
+                if (!deferredPrompt) return;
                 deferredPrompt.prompt();
-                
-                // Wait for the user to respond to the prompt
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        console.log('User accepted the install prompt');
-                    } else {
-                        console.log('User dismissed the install prompt');
-                    }
-                    deferredPrompt = null;
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') {
+                    installButton.style.display = 'none';
+                }
+                deferredPrompt = null;
+            });
+
+            // Service Worker
+            if ('serviceWorker' in navigator) {
+                window.addEventListener('load', () => {
+                    const swCode = `self.addEventListener('install', e => e.waitUntil(caches.open('gita').then(c => c.addAll(['./'])))); self.addEventListener('fetch', e => e.respondWith(caches.match(e.request).then(r => r || fetch(e.request))));`;
+                    const blob = new Blob([swCode], { type: 'application/javascript' });
+                    navigator.serviceWorker.register(URL.createObjectURL(blob));
                 });
             }
-        });
 
-        closePrompt.addEventListener('click', () => {
-            pwaPrompt.classList.remove('show');
-        });
-
-        // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    window.scrollTo({
-                        top: targetElement.offsetTop - 80,
-                        behavior: 'smooth'
-                    });
-                    
-                    // Update active nav button
-                    document.querySelectorAll('.nav-button').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                }
+            // Smooth scrolling
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        window.scrollTo({ top: target.offsetTop - 80, behavior: 'smooth' });
+                    }
+                });
             });
-        });
-
-        // Create a simple service worker for offline functionality
-        const serviceWorkerCode = `
-        self.addEventListener('install', function(event) {
-            event.waitUntil(
-                caches.open('gita-v1').then(function(cache) {
-                    return cache.addAll([
-                        './',
-                        'https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400&family=Noto+Serif:ital,wght@0,400;0,700;1,400&display=swap'
-                    ]);
-                })
-            );
-        });
-
-        self.addEventListener('fetch', function(event) {
-            event.respondWith(
-                caches.match(event.request).then(function(response) {
-                    return response || fetch(event.request);
-                })
-            );
-        });
-        `;
-
-        // Create a blob URL for the service worker
-        const blob = new Blob([serviceWorkerCode], { type: 'application/javascript' });
-        const swURL = URL.createObjectURL(blob);
-
-        // Create manifest file content
-        const manifest = {
-            "name": "Gita Online",
-            "short_name": "Gita",
-            "description": "Listen to Bhagavad Gita audio chapters",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#2c5530",
-            "theme_color": "#d4a017",
-            "icons": [
-                {
-                    "src": "https://raw.githubusercontent.com/riponsarkar21/GitaOnline/main/images/favicon/favicon.ico",
-                    "sizes": "64x64",
-                    "type": "image/x-icon"
-                }
-            ]
-        };
-
-        // Create manifest file dynamically
-        const manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
-        const manifestURL = URL.createObjectURL(manifestBlob);
-        
-        // Set manifest link
-        document.querySelector('link[rel="manifest"]').href = manifestURL;
+        })();
     </script>
 </body>
 </html>
